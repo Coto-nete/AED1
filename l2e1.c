@@ -1,139 +1,128 @@
-    #include <stdio.h>
-    #include <stdlib.h>
+/*Em uma máquina de autoatendimento bancário (ATM), um cliente pode realizar saques em dinheiro. Considere que na máquina há cédulas de 2, 5, 10, 20, 50 e 100 reais e que há uma disponibilidade ilimitada de notas de cada um destes valores. Faça um programa em C para receber como entradas o saldo da conta do cliente e o valor desejado do saque e, caso o cliente tenha saldo suficiente e o valor do saque seja possível considerando as cédulas disponíveis, determinar quantas notas de cada valor o cliente deve receber e informar o novo saldo. Para determinar os valores e as quantidades de cédulas que deverão ser entregues ao cliente devem ser consideradas duas possibilidades: 1) com número mínimo de notas (dinheiro menos trocado); 2) com número máximo de notas (dinheiro mais trocado);
 
+ 
 
-    int validacao_saque(int valor){
-        if(valor==3 || valor ==1){
-            return 1;
-        }    
+Considerações sobre as entradas e saídas e respectivas formatações:
 
-        return 0;
+·         O saldo da conta deve ser valor real com duas casas decimais
+
+·         O valor do saque deve ser valor inteiro maior do que zero
+*/
+#include <stdio.h>
+#include <stdlib.h>
+
+float saldo;
+
+int confere_valor(int saque){
+    if(saque>saldo){
+        return 1;
+    }else if (saque<=0){
+        return 2;
+    }else if (saque == 1 || saque == 3 ){
+        return 3;
+    }
+    return 0;
+}
+void realizar_saque(int saque){
+    printf("RESULTADOS\n\n");
+    printf("Valor atualizado do saldo (em reais): %.2f\n\n",(float)saldo-saque);
+
+    printf("Opcao de saque 1 (menor quantidade possivel de cedulas):\n\n");
+    int cont;
+    cont = saque;
+    int temp;
+    temp = 0;
+    while (cont>=100 && !(cont-100==3 || cont-100==1)){
+        temp++;
+        cont-=100;
+    }
+    
+    if(temp!=0){
+        printf("Cedulas de 100 reais: %i\n\n",temp);
+        temp = 0;
     }
 
-    void saque(int valor,float saldo){
-        int back;
-        back = valor;
+    while (cont>=50 && !(cont-50==3 || cont-50==1)){
+        temp++;
+        cont-=50;
+    }
+    if(temp!=0){
+        printf("Cedulas de 50 reais: %i\n\n",temp);
+        temp = 0;
+    }
 
-        int saquemenor[7];
-        for(int c = 0 ; c < 6 ; c ++){
-            saquemenor[c] = 0;
-        }
-        
+    while (cont>=20 && !(cont-20==3 || cont-20==1)){
+        temp++;
+        cont-=20;
+    }
+    if(temp!=0){
+        printf("Cedulas de 20 reais: %i\n\n",temp);
+        temp = 0;
+    }
 
-        struct{
-            int cinco,dois;
-        }bolao;
+    while (cont>=10 && !(cont-10==3 || cont-10==1)){
+        temp++;
+        cont-=10;
+    }
+    if(temp!=0){
+        printf("Cedulas de 10 reais: %i\n\n",temp);
+        temp = 0;
+    }
 
-        
-        while(valor-100>=0){
-            saquemenor[0] ++;
-            valor-=100;
-        }
-        while(valor-50>=0){
-            saquemenor[1] ++;
-            valor-=50;
-        }
-        while(valor-20>=0){
-            saquemenor[2] ++;
-            valor-=20;
-        }
-        while(valor-10>=0 && valor-10!=1 && valor-10!=3){
-            saquemenor[3] ++;
-            valor-=10;
-        }
-        while(valor-5>=0 && (valor-5)%2!=1){
-            saquemenor[4] ++;
-            valor-=5;
-        }
-        while(valor-2>=0){
-            saquemenor[5] ++;
-            valor-=2;
-        }
+    while (cont>=5 && !(cont-5==3 || cont-5==1)){
+        temp++;
+        cont-=5;
+    }
+    if(temp!=0){
+        printf("Cedulas de 5 reais: %i\n\n",temp);
+        temp = 0;
+    }
+
+    while (cont>=2){
+        temp++;
+        cont-=2;
+    }
+    if(temp!=0){
+        printf("Cedulas de 2 reais: %i\n\n",temp);
+        temp = 0;
+    }
 
 
+    printf("Opcao de saque 2 (maior quantidade possivel de cedulas):\n\n");
+    if(saque%2==0){
+        printf("Cedulas de 2 reais: %d\n",saque/2);
+    }else {
+        printf("Cedulas de 2 reais: %d\n",(saque-5)/2);
+        printf("Cedulas de 5 reais: %d\n",1);
+    }
+}
 
-        if (back%2==1){
-            bolao.cinco = 1;
-            bolao.dois = (back-5)/2;
-        }else{
-            bolao.dois = back/2;
-        }
-        
 
-        printf("RESULTADOS\n\n");
-        printf("Valor atualizado do saldo (em reais): %.2f\n\n", (float)(saldo - back));
-        printf("Opcao de saque 1 (menor quantidade possivel de cedulas)\n\n");
-        for (int i = 0 ; i < 6 ; i++){
-            switch (i)
-            {
-            case 0:
-                if(saquemenor[0]!=0){
-                    printf("Cedulas de 100 reais: %i\n\n",saquemenor[0]);
-                }
-                break;
+
+void main(){
+    printf("Entre com o saldo da conta a ser sacada (em reais): ");
+    scanf("%f",&saldo);printf("\n\n");
+
+    int saque;
+    int flag; 
+    do{
+        printf("Entre com o valor do saque (em reais): ");
+        scanf("%i",&saque);printf("\n\n");
+        flag = confere_valor(saque);
+        switch (flag)
+        {
             case 1:
-                if(saquemenor[1]!=0){
-                    printf("Cedulas de 50 reais: %i\n\n",saquemenor[1]);
-                }
+                printf("Saldo insuficiente para valor desejado\n\n");
                 break;
             case 2:
-                if(saquemenor[2]!=0){
-                    printf("Cedulas de 20 reais: %i\n\n",saquemenor[2]);
-                }
+                printf("Valor do saque invalido\n\n");
                 break;
             case 3:
-                if(saquemenor[3]!=0){
-                    printf("Cedulas de 10 reais: %i\n\n",saquemenor[3]);
-                }
+                printf("Valor do saque incompativel com notas disponiveis\n\n");
                 break;
-            case 4:
-                if(saquemenor[4]!=0){
-                    printf("Cedulas de 5 reais: %i\n\n",saquemenor[4]);
-                }
-                break;
-            case 5:
-                if(saquemenor[5]!=0){
-                    printf("Cedulas de 2 reais: %i\n\n",saquemenor[5]);
-                }
-                break;
-            }   
+        default:
+            realizar_saque(saque);
+            break;
         }
-
-        printf("Opcao de saque 2 (maior quantidade possivel de cedulas)\n\n");
-        
-        printf("Cedulas de 2 reais: %i\n\n",bolao.dois);
-        if(bolao.cinco!=0){
-            printf("Cedulas de 5 reais: %i\n\n",bolao.cinco);
-        }
-    }
-
-    void main(){
-        float saldo_usuario;
-        int valor_saque;
-        printf("Entre com o saldo da conta a ser sacada (em reais): ");
-        scanf("%f",&saldo_usuario);
-
-        do{
-            printf("Entre com o valor do saque (em reais): ");
-            scanf("%i",&valor_saque);
-
-
-            if (valor_saque>saldo_usuario){
-                printf("Saldo insuficiente para valor desejado");printf("\n\n");
-                continue;
-                
-            }else if(valor_saque<=0){
-                printf("Valor do saque invalido\n\n");
-                continue;
-
-            }else if(!validacao_saque){
-                printf("Valor do saque incompatível com notas disponiveis\n\n");
-                continue;
-
-            }
-
-        }while(valor_saque>saldo_usuario || !validacao_saque || valor_saque<=0);
-
-        saque(valor_saque,saldo_usuario);
-
-    }
+    }while(flag!=0);
+}
