@@ -108,24 +108,24 @@ int insereAB(reg *raiz, struct Venda dado)
 	}
 }
 
-int filhoEsq(Node *raiz, int dado)
+int filhoEsq(reg *raiz, struct Venda dado)
 {
-	Node *node = criaAB(dado);
-	if (raiz->esq == NULL){
-		raiz->esq = node;
-		raiz->esq->pai = raiz;
+	reg *node = criaAB(dado);
+	if (raiz->Esq == NULL){
+		raiz->Esq = node;
+		raiz->Esq->Pai = raiz;
 		return 1;
 	} else {
 		return 0;
 	}
 }
 
-int filhoDir(Node *raiz, int dado)
+int filhoDir(reg *raiz, struct Venda dado)
 {
-	Node *node = criaAB(dado);
+	reg *node = criaAB(dado);
 	if (raiz->Dir == NULL){
 		raiz->Dir = node;
-		raiz->Dir->pai = raiz;
+		raiz->Dir->Pai = raiz;
 		return 1;
 	} else {
 		return 0;
