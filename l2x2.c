@@ -81,12 +81,12 @@ temp* criaAB(struct Venda dado){
 	return tree;
 }
 
-int insereAB(reg *raiz, int dado)
+int insereAB(reg *raiz, struct Venda dado)
 {
-	if (raiz -> Dado == dado)
-		return 0
+	if (raiz->Dado.nota == dado.nota)
+		return 0;
 	else {
-		if (dado > raiz->Dado){
+		if (dado.nota > raiz->Dado.nota){
 			if (direita(raiz) != NULL){
 				raiz = direita(raiz);
 				insereAB(raiz, dado);
@@ -105,5 +105,29 @@ int insereAB(reg *raiz, int dado)
 				return 1;
 			}
 		}
+	}
+}
+
+int filhoEsq(Node *raiz, int dado)
+{
+	Node *node = criaAB(dado);
+	if (raiz->esq == NULL){
+		raiz->esq = node;
+		raiz->esq->pai = raiz;
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+int filhoDir(Node *raiz, int dado)
+{
+	Node *node = criaAB(dado);
+	if (raiz->Dir == NULL){
+		raiz->Dir = node;
+		raiz->Dir->pai = raiz;
+		return 1;
+	} else {
+		return 0;
 	}
 }
