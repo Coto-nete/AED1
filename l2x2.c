@@ -18,7 +18,10 @@ typedef struct TreeReg{
 
 
 int qntdias(int mes);
-temp* criaAB(int dado);
+reg* criaAB(struct Venda dado);
+int filhoEsq(reg *raiz, struct Venda dado);
+int filhoDir(reg *raiz, struct Venda dado);
+
 
 void main(){
     int dias,qntfunc,temp;
@@ -70,7 +73,7 @@ int qntdias(int mes){
     return dias;
 }
 
-temp* criaAB(struct Venda dado){
+reg* criaAB(struct Venda dado){
 	reg *tree = (temp*)malloc(sizeof(temp));    // Aloca memória para o novo nó.
 
 	tree->Dado = dado;   // Define o dado do nó.
